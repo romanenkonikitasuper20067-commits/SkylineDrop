@@ -273,7 +273,18 @@
       </p>
 
       <div class="cta">
-        <a class="btn btn-primary" href="downloads/SkylineDropSetup.exe" download>
+        <!--
+          GitHub Pages / Releases:
+          подставьте свои URL ниже (или оставьте относительные пути,
+          если APK/EXE лежат в /downloads рядом с этой страницей).
+        -->
+        <a
+          class="btn btn-primary"
+          id="btn-windows"
+          href="https://disk.yandex.ru/d/gX6ZJPPXCQbejg"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M4 6.5h16v11H4v-11Z" stroke="currentColor" stroke-width="1.7"/>
             <path d="M8 17.5V20h8v-2.5" stroke="currentColor" stroke-width="1.7"/>
@@ -281,7 +292,13 @@
           </svg>
           Скачать для Windows
         </a>
-        <a class="btn btn-ghost" href="downloads/SkylineDrop.apk" download>
+        <a
+          class="btn btn-ghost"
+          id="btn-android"
+          href="https://disk.yandex.ru/d/IZ8zvp_97bEQYQ"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="7" y="3.5" width="10" height="17" rx="2.2" stroke="currentColor" stroke-width="1.7"/>
             <path d="M10 18.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
@@ -293,5 +310,40 @@
       <p class="meta">EXE · APK · LAN · без аккаунта</p>
     </div>
   </main>
+
+  <script>
+    // Ссылки скачивания для GitHub Pages / Releases.
+    // Замените YOUR_USER / YOUR_REPO на свои — или оставьте пустым,
+    // тогда останутся относительные пути ./downloads/...
+    const GITHUB = {
+      user: "YOUR_USER",
+      repo: "YOUR_REPO",
+      // true = брать файлы из Releases (latest)
+      // false = файлы из папки downloads на GitHub Pages
+      useReleases: false,
+      windowsFile: "SkylineDropSetup.exe",
+      androidFile: "SkylineDrop.apk",
+    };
+
+    (function applyDownloadLinks() {
+      const win = document.getElementById("btn-windows");
+      const and = document.getElementById("btn-android");
+      if (!win || !and) return;
+
+      const { user, repo, useReleases, windowsFile, androidFile } = GITHUB;
+      const configured = user !== "YOUR_USER" && repo !== "YOUR_REPO";
+
+      if (configured && useReleases) {
+        const base = `https://github.com/${user}/${repo}/releases/latest/download`;
+        win.href = `${base}/${windowsFile}`;
+        and.href = `${base}/${androidFile}`;
+      } else if (configured && !useReleases) {
+        const base = `https://${user}.github.io/${repo}/downloads`;
+        win.href = `${base}/${windowsFile}`;
+        and.href = `${base}/${androidFile}`;
+      }
+      // иначе остаются относительные href из HTML — удобно для локального Pages root
+    })();
+  </script>
 </body>
 </html>
